@@ -1,9 +1,9 @@
 {
   "runWizardOnStartup": true,
   "currentTemplate": "standard",
-  "currentTheme": "oxygen",
+  "currentTheme": "everforest",
   "customThemeFile": "custom",
-  "contentOrganization": "file-based",
+  "contentOrganization": "folder-based",
   "themeColors": {
     "mode": "simple",
     "simpleColors": {
@@ -12,10 +12,10 @@
     }
   },
   "siteInfo": {
-    "site": "https://astro-modular.netlify.app",
-    "title": "Astro Modular",
-    "description": "A flexible blog theme designed for Obsidian users.",
-    "author": "David V. Kimball",
+    "site": "https://lilith.now",
+    "title": "lilith",
+    "description": "Software, law, science, books, and parenting.",
+    "author": "Lilith River",
     "language": "en",
     "faviconThemeAdaptive": true,
     "defaultOgImageAlt": "Astro Modular logo."
@@ -64,19 +64,19 @@
       },
       {
         "title": "GitHub",
-        "url": "https://github.com/davidvkimball/astro-modular"
+        "url": "https://github.com/lilith/now"
       }
     ],
     "social": [
       {
-        "title": "X",
-        "url": "https://x.com/davidvkimball",
-        "icon": "x-twitter"
+        "title": "GitHub",
+        "url": "https://github.com/lilith",
+        "icon": "github"
       },
       {
-        "title": "GitHub",
-        "url": "https://github.com/davidvkimball",
-        "icon": "github"
+        "title": "New Social",
+        "url": "https://example.com",
+        "icon": ""
       }
     ]
   },
@@ -144,21 +144,21 @@
     "postCardAspectRatio": "og",
     "customPostCardAspectRatio": "2.5/1",
     "comments": {
-      "enabled": false,
+      "enabled": true,
       "provider": "giscus",
-      "rawScript": "",
-      "repo": "",
-      "repoId": "",
-      "category": "",
-      "categoryId": "",
-      "mapping": "",
-      "strict": "",
-      "reactions": "",
-      "metadata": "",
-      "inputPosition": "",
-      "theme": "",
-      "lang": "",
-      "loading": ""
+      "rawScript": "<script src=\"https://giscus.app/client.js\"\n        data-repo=\"lilith/now\"\n        data-repo-id=\"R_kgDORCuVmw\"\n        data-category=\"Announcements\"\n        data-category-id=\"DIC_kwDORCuVm84C1hNE\"\n        data-mapping=\"title\"\n        data-strict=\"0\"\n        data-reactions-enabled=\"1\"\n        data-emit-metadata=\"0\"\n        data-input-position=\"top\"\n        data-theme=\"preferred_color_scheme\"\n        data-lang=\"en\"\n        data-loading=\"lazy\"\n        crossorigin=\"anonymous\"\n        async>\n</script>",
+      "repo": "lilith/now",
+      "repoId": "R_kgDORCuVmw",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDORCuVm84C1hNE",
+      "mapping": "title",
+      "strict": "0",
+      "reactions": "1",
+      "metadata": "0",
+      "inputPosition": "top",
+      "theme": "preferred_color_scheme",
+      "lang": "en",
+      "loading": "lazy"
     }
   },
   "features": {
@@ -171,12 +171,9 @@
     "hideScrollBar": false,
     "scrollToTop": true,
     "showSocialIconsInFooter": true,
-    "profilePicture": false,
-    "comments": false,
+    "profilePicture": true,
+    "comments": true,
     "featureButton": "mode",
-    "showPostCardCoverImages": "featured-and-posts",
-    "postCardAspectRatio": "og",
-    "customPostCardAspectRatio": "2.5/1",
     "quickActions": {
       "enabled": true,
       "toggleMode": true,
@@ -187,7 +184,7 @@
   "typography": {
     "headingFont": "Inter",
     "proseFont": "Inter",
-    "monoFont": "JetBrains Mono",
+    "monoFont": "Cascadia Code",
     "fontSource": "local",
     "fontDisplay": "swap",
     "customFonts": {
@@ -199,7 +196,7 @@
   },
   "optionalFeatures": {
     "profilePicture": {
-      "enabled": false,
+      "enabled": true,
       "image": "/profile.jpg",
       "alt": "Profile picture",
       "size": "md",
@@ -208,25 +205,25 @@
       "style": "circle"
     },
     "comments": {
-      "enabled": false,
+      "enabled": true,
       "provider": "giscus",
-      "rawScript": "",
-      "repo": "",
-      "repoId": "",
-      "category": "",
-      "categoryId": "",
-      "mapping": "",
-      "strict": "",
-      "reactions": "",
-      "metadata": "",
-      "inputPosition": "",
-      "theme": "",
-      "lang": "",
-      "loading": ""
+      "rawScript": "<script src=\"https://giscus.app/client.js\"\n        data-repo=\"lilith/now\"\n        data-repo-id=\"R_kgDORCuVmw\"\n        data-category=\"Announcements\"\n        data-category-id=\"DIC_kwDORCuVm84C1hNE\"\n        data-mapping=\"title\"\n        data-strict=\"0\"\n        data-reactions-enabled=\"1\"\n        data-emit-metadata=\"0\"\n        data-input-position=\"top\"\n        data-theme=\"preferred_color_scheme\"\n        data-lang=\"en\"\n        data-loading=\"lazy\"\n        crossorigin=\"anonymous\"\n        async>\n</script>",
+      "repo": "lilith/now",
+      "repoId": "R_kgDORCuVmw",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDORCuVm84C1hNE",
+      "mapping": "title",
+      "strict": "0",
+      "reactions": "1",
+      "metadata": "0",
+      "inputPosition": "top",
+      "theme": "preferred_color_scheme",
+      "lang": "en",
+      "loading": "lazy"
     }
   },
   "deployment": {
-    "platform": "netlify"
+    "platform": "vercel"
   },
   "pluginConfig": {
     "obsidianSettings": {

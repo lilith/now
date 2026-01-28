@@ -1,0 +1,73 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/PostCard.astro';
+import { siteConfig } from '@/config';
+import { shouldShowPost } from '@/utils/markdown';
+import { SUPPORTED_LANGUAGES, LANGUAGE_CONFIG } from '@/utils/i18n';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Non-English languages for i18n routes
+  const i18nLanguages = SUPPORTED_LANGUAGES.filter(l => l !== 'en');
+  const paths = [];
+
+  for (const lang of i18nLanguages) {
+    try {
+      const posts = await getCollection(`posts-${lang}` as any);
+      if (posts.length > 0) {
+        paths.push({
+          params: { lang },
+          props: { lang }
+        });
+      }
+    } catch {
+      // Collection doesn't exist yet
+    }
+  }
+
+  return paths;
+};
+
+const { lang } = Astro.props;
+const langConfig = LANGUAGE_CONFIG[lang as keyof typeof LANGUAGE_CONFIG];
+const langName = langConfig?.nativeName || lang;
+
+// Get posts for this language
+let posts: any[] = [];
+try {
+  const allPosts = await getCollection(`posts-${lang}` as any);
+  const isDev = import.meta.env.DEV;
+  posts = allPosts
+    .filter(post => shouldShowPost(post, isDev))
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+} catch {
+  // No translations yet
+}
+
+const title = `Posts (${langName})`;
+const description = `Blog posts in ${langName}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="container mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold mb-2">{title}</h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        <a href="/posts/" class="hover:underline">← English</a>
+      </p>
+    </header>
+
+    {posts.length === 0 ? (
+      <p class="text-gray-600 dark:text-gray-400">
+        No translated posts available yet. Run <code>pnpm translate {lang}</code> to generate translations.
+      </p>
+    ) : (
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <PostCard post={post} basePath={`/${lang}/posts`} />
+        ))}
+      </div>
+    )}
+  </main>
+</BaseLayout>

@@ -32,6 +32,13 @@ export default defineConfig({
   deployment: {
     platform: DEPLOYMENT_PLATFORM
   },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es', 'fr', 'de', 'ja', 'zh', 'it', 'sv'],
+    routing: {
+      prefixDefaultLocale: false, // English at /posts/, other languages at /es/posts/, etc.
+    },
+  },
   csp: {
     scriptDirective: {
       resources: [

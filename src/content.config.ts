@@ -1,6 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+// Supported languages for i18n (excluding 'en' which uses default collections)
+const I18N_LANGUAGES = ['es', 'fr', 'de', 'ja', 'zh', 'it', 'sv'] as const;
+
 // Define schema for blog posts
 const postsCollection = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
@@ -140,6 +143,39 @@ const specialCollection = defineCollection({
   }),
 });
 
+// Reusable schemas for i18n collections
+const postSchema = postsCollection.schema;
+const pageSchema = pagesCollection.schema;
+const projectSchema = projectsCollection.schema;
+const docSchema = docsCollection.schema;
+
+// Helper to create i18n collections for a language
+function createI18nCollections(lang: string) {
+  return {
+    [`posts-${lang}`]: defineCollection({
+      loader: glob({ pattern: '**/*.{md,mdx}', base: `./src/content-i18n/${lang}/posts` }),
+      schema: postSchema,
+    }),
+    [`pages-${lang}`]: defineCollection({
+      loader: glob({ pattern: '**/*.{md,mdx}', base: `./src/content-i18n/${lang}/pages` }),
+      schema: pageSchema,
+    }),
+    [`projects-${lang}`]: defineCollection({
+      loader: glob({ pattern: '**/*.{md,mdx}', base: `./src/content-i18n/${lang}/projects` }),
+      schema: projectSchema,
+    }),
+    [`docs-${lang}`]: defineCollection({
+      loader: glob({ pattern: '**/*.{md,mdx}', base: `./src/content-i18n/${lang}/docs` }),
+      schema: docSchema,
+    }),
+  };
+}
+
+// Generate i18n collections for all languages
+const i18nCollections = I18N_LANGUAGES.reduce((acc, lang) => {
+  return { ...acc, ...createI18nCollections(lang) };
+}, {} as Record<string, ReturnType<typeof defineCollection>>);
+
 // Export collections
 export const collections = {
   posts: postsCollection,
@@ -147,5 +183,10 @@ export const collections = {
   projects: projectsCollection,
   docs: docsCollection,
   special: specialCollection,
+  // Include all i18n collections
+  ...i18nCollections,
 };
+
+// Export language list for use in routes
+export { I18N_LANGUAGES };
 

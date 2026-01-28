@@ -1,0 +1,56 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import { shouldShowPost } from '@/utils/markdown';
+import PostLayout from '@/layouts/PostLayout.astro';
+import { SUPPORTED_LANGUAGES } from '@/utils/i18n';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Non-English languages for i18n routes
+  const i18nLanguages = SUPPORTED_LANGUAGES.filter(l => l !== 'en');
+  const paths = [];
+  const isDev = import.meta.env.DEV;
+
+  for (const lang of i18nLanguages) {
+    try {
+      // Get posts for this language from the i18n collection
+      const posts = await getCollection(`posts-${lang}` as any);
+
+      // Filter posts for production
+      const visiblePosts = posts.filter(post => shouldShowPost(post, isDev));
+
+      // Generate paths for this language
+      for (const post of visiblePosts) {
+        paths.push({
+          params: { lang, slug: post.id },
+          props: { post, lang }
+        });
+      }
+    } catch (e) {
+      // Collection doesn't exist yet (translations not generated), skip
+    }
+  }
+
+  return paths;
+};
+
+export interface Props {
+  post: any;
+  lang: string;
+}
+
+const { post, lang } = Astro.props;
+
+// Validate post data
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Check if post should be visible in production
+const isDev = import.meta.env.DEV;
+if (!shouldShowPost(post, isDev)) {
+  return Astro.redirect('/404');
+}
+---
+
+<PostLayout post={post} lang={lang} />

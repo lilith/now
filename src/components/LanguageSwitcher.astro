@@ -1,0 +1,80 @@
+---
+/**
+ * Language Switcher Component
+ * Displays available translations for the current page
+ */
+
+export interface Props {
+  currentLang?: string;
+  currentSlug?: string;
+  contentType?: 'posts' | 'pages' | 'projects' | 'docs';
+  availableLanguages?: string[];
+}
+
+const LANGUAGE_CONFIG: Record<string, { name: string; flag: string }> = {
+  en: { name: 'English', flag: '🇺🇸' },
+  es: { name: 'Español', flag: '🇪🇸' },
+  fr: { name: 'Français', flag: '🇫🇷' },
+  de: { name: 'Deutsch', flag: '🇩🇪' },
+  ja: { name: '日本語', flag: '🇯🇵' },
+  zh: { name: '中文', flag: '🇨🇳' },
+  it: { name: 'Italiano', flag: '🇮🇹' },
+  sv: { name: 'Svenska', flag: '🇸🇪' },
+};
+
+const {
+  currentLang = 'en',
+  currentSlug = '',
+  contentType = 'posts',
+  availableLanguages = ['en', 'es', 'fr', 'de', 'ja', 'zh', 'it', 'sv']
+} = Astro.props;
+
+// Build URLs for each language
+const languageLinks = availableLanguages.map(lang => {
+  const config = LANGUAGE_CONFIG[lang] || { name: lang, flag: '🌐' };
+  let url: string;
+
+  if (lang === 'en') {
+    // English uses default paths
+    url = currentSlug ? `/${contentType}/${currentSlug}/` : `/${contentType}/`;
+  } else {
+    // Other languages use prefixed paths
+    url = currentSlug ? `/${lang}/${contentType}/${currentSlug}/` : `/${lang}/${contentType}/`;
+  }
+
+  return {
+    lang,
+    ...config,
+    url,
+    isCurrent: lang === currentLang,
+  };
+});
+---
+
+<div class="language-switcher flex items-center gap-2 text-sm">
+  <span class="text-gray-500 dark:text-gray-400 mr-1">🌐</span>
+  {languageLinks.map((link, index) => (
+    <>
+      {index > 0 && <span class="text-gray-300 dark:text-gray-600">|</span>}
+      {link.isCurrent ? (
+        <span class="font-semibold text-primary-600 dark:text-primary-400" title={link.name}>
+          {link.flag} {link.lang.toUpperCase()}
+        </span>
+      ) : (
+        <a
+          href={link.url}
+          class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          title={link.name}
+        >
+          {link.flag} {link.lang.toUpperCase()}
+        </a>
+      )}
+    </>
+  ))}
+</div>
+
+<style>
+  .language-switcher {
+    font-family: var(--font-mono, monospace);
+  }
+</style>

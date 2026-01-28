@@ -14,15 +14,17 @@ import GiscusComments from '@/components/GiscusComments.astro';
 import Lightbox from '@/components/Lightbox.astro';
 import Icon from '@/components/Icon.astro';
 import ImageWrapper from '@/components/ImageWrapper.astro';
+import LanguageSwitcher from '@/components/LanguageSwitcher.astro';
 import { devConfig } from '@/config/dev';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 export interface Props {
   post: Post;
+  lang?: string;
 }
 
-const { post } = Astro.props;
+const { post, lang = 'en' } = Astro.props;
 
 // Check if we're in development mode
 const isDev = import.meta.env.DEV;
@@ -205,9 +207,18 @@ if (siteConfig.postOptions.graphView.enabled && siteConfig.postOptions.graphView
         <div class={`p-6 ${siteConfig.postOptions.showPostCardCoverImages !== 'none' && post.data.image && post.data.hideCoverImage !== true ? 'rounded-b-lg' : 'rounded-lg'}`}>
           <!-- Post header -->
           <header class="mb-4">
-          <h1 class="text-xl font-bold text-primary-900 dark:text-primary-50 mb-6 leading-tight">
+          <h1 class="text-xl font-bold text-primary-900 dark:text-primary-50 mb-4 leading-tight">
             {post.data.title}
           </h1>
+
+          <!-- Language Switcher -->
+          <div class="mb-4">
+            <LanguageSwitcher
+              currentLang={lang}
+              currentSlug={post.id}
+              contentType="posts"
+            />
+          </div>
 
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-primary-600 dark:text-primary-300 mb-6">
             <time datetime={post.data.date.toISOString()} class="font-medium">
